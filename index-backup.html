@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Semilleros | Asperger para Asperger</title>
+  <meta name="description" content="Semilleros: sembrar, regar y apoyar proyectos creados desde Asperger para Asperger." />
+  <style>
+    /* === Tema (ajusta estos colores para imitar www.aspergerparaasperger.org) === */
+    :root{
+      --brand-bg: #0e2a47;      /* primario oscuro */
+      --brand-accent: #ffb703;  /* acento cálido */
+      --brand-accent-2: #3cbdb6;/* acento secundario */
+      --bg: #f6f8fb;            /* fondo general */
+      --card: #ffffff;          /* fondo de tarjetas */
+      --text: #0e1b2a;          /* texto principal */
+      --muted: #5b6b7a;         /* texto secundario */
+      --ring: rgba(255,183,3,.35);
+      --radius: 16px;
+      --shadow-1: 0 10px 25px rgba(0,0,0,.07);
+      --shadow-2: 0 18px 40px rgba(0,0,0,.08);
+    }
+    *{ box-sizing: border-box; }
+    html,body{ margin:0; padding:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"; color:var(--text); background:var(--bg); }
+    img{ max-width:100%; height:auto; display:block; }
+    a{ color:inherit; text-decoration: none; }
+    .container{ width:min(1120px, 92vw); margin-inline:auto; }
+
+    /* === Header === */
+    header{
+      background: linear-gradient(180deg, var(--brand-bg), #12365a 60%);
+      color:#fff;
+      position: sticky; top:0; z-index: 10;
+      box-shadow: var(--shadow-1);
+    }
+    .nav{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding: .9rem 0; }
+    .brand{ display:flex; align-items:center; gap:.75rem; font-weight: 800; letter-spacing:.2px; }
+    .brand .logo{
+      inline-size: 40px; block-size:40px; border-radius:12px;
+      background: conic-gradient(from 180deg, var(--brand-accent), var(--brand-accent-2), var(--brand-accent));
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,.5);
+    }
+    .nav a.btn{ padding:.6rem 1rem; border-radius:12px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.35); color:#fff; font-weight:600; }
+    .nav a.btn:hover{ background:rgba(255,255,255,.18); }
+
+    /* === Hero === */
+    .hero{ color:#fff; padding: 2.6rem 0 2.2rem; background: linear-gradient(180deg, transparent, rgba(0,0,0,.04)); }
+    .hero h1{ font-size: clamp(1.8rem, 2.6vw + 1rem, 3rem); margin:0 0 .6rem; }
+    .hero p{ margin:0 0 1.2rem; max-width: 60ch; line-height:1.5; opacity:.95; }
+    .actions{ display:flex; gap:.6rem; flex-wrap:wrap; }
+    .btn{ display:inline-flex; align-items:center; gap:.55rem; padding:.8rem 1rem; border-radius: 999px; border:0; cursor:pointer; font-weight:700; box-shadow: var(--shadow-1); }
+    .btn.primary{ background: var(--brand-accent); color:#1b1500; }
+    .btn.secondary{ background: #fff; color:#102235; border:1px solid #e6ebf2; }
+    .btn:focus-visible{ outline: 3px solid var(--ring); outline-offset: 2px; }
+
+    /* === Barra de herramientas === */
+    .toolbar{ background:#fff; border:1px solid #e7edf4; margin-top: 1rem; border-radius: 14px; padding: .8rem; display:grid; grid-template-columns: 1fr 200px 160px; gap:.6rem; box-shadow: var(--shadow-1); }
+    .toolbar input, .toolbar select{ padding:.7rem .9rem; border:1px solid #d7e0ea; border-radius: 12px; background:#fff; font: inherit; }
+    @media (max-width: 840px){ .toolbar{ grid-template-columns: 1fr; } }
+
+    /* === Sección Semilleros (grid 3x3) === */
+    .section{ padding: 2.4rem 0; }
+    .section h2{ font-size: clamp(1.4rem, 1.2vw + 1rem, 2rem); margin:0 0 .6rem; }
+    .section p.lead{ margin:0 0 1.4rem; color:var(--muted); max-width: 70ch; }
+
+    .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1rem; }
+    @media (max-width: 980px){ .grid{ grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 640px){ .grid{ grid-template-columns: 1fr; } }
+
+    .card{ background: var(--card); border: 1px solid #e7edf4; border-radius: var(--radius); box-shadow: var(--shadow-2); overflow:hidden; display:flex; flex-direction:column; }
+    .thumb{ aspect-ratio: 16 / 9; background: radial-gradient(1200px 400px at 0% 100%, rgba(255,183,3,.25), transparent 60%), linear-gradient(120deg, #dfe9f3, #f9fbff); }
+    .content{ padding: 1rem 1rem 1.1rem; display:flex; flex-direction:column; gap:.6rem; }
+    .title{ font-weight:800; font-size: 1.05rem; }
+    .meta{ display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; }
+    .badge{ font-size:.75rem; padding:.3rem .55rem; border-radius:999px; border:1px solid #e3e9f1; background:#f7fafc; color:#0b2236; }
+    .badge.status{ border-color: transparent; color:#1b1500; background: var(--brand-accent); }
+    .desc{ color: var(--muted); line-height:1.5; }
+    .tags{ display:flex; gap:.4rem; flex-wrap:wrap; }
+    .tags .tag{ font-size:.72rem; padding:.25rem .5rem; border-radius:999px; background:#eef3f8; color:#11324d; }
+    .card .actions{ margin-top:.4rem; }
+    .card .actions .btn{ padding:.6rem .8rem; font-weight:700; }
+
+    /* === Footer === */
+    footer{ margin-top: 2rem; padding: 2rem 0; color:#e9f1fa; background: #0c213a; }
+    .footer-grid{ display:grid; gap:1rem; grid-template-columns: 2fr 1fr 1fr; }
+    .footer-grid h4{ margin:.2rem 0 .6rem; }
+    .footer-grid a{ color:#e9f1fa; opacity:.9; }
+    .small{ font-size:.9rem; color:#bcd0e6; }
+    @media (max-width: 860px){ .footer-grid{ grid-template-columns: 1fr; } }
+
+    /* === Modal styles === */
+    #modalSemilla {
+      backdrop-filter: blur(4px);
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    #modalSemilla > div {
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    #modalSemilla input:focus,
+    #modalSemilla textarea:focus,
+    #modalSemilla select:focus {
+      outline: none;
+      border-color: var(--brand-accent);
+      box-shadow: 0 0 0 3px var(--ring);
+    }
+    
+    #modalSemilla label {
+      font-size: 0.9rem;
+    }
+    
+    #modalSemilla .btn {
+      min-width: 120px;
+    }
+
+    /* === Accesibilidad y detalles === */
+    @media (prefers-reduced-motion: reduce){ *{ scroll-behavior: auto !important; } }
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  </style>
+</head>
+<body>
+  <!-- ===== Header / Navegación ===== -->
+  <header>
+    <div class="container nav" role="navigation" aria-label="Principal">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <a href="#" class="brand-name" aria-label="Inicio">Asperger para Asperger</a>
+      </div>
+      <nav class="links" aria-label="Atajos">
+        <a class="btn" href="#semilleros">Semilleros</a>
+        <a class="btn" href="#mentorias">Mentorías</a>
+        <a class="btn" href="#club">Club</a>
+        <a class="btn" href="#comunidad">Comunidad</a>
+      </nav>
+    </div>
+
+    <!-- ===== Hero ===== -->
+    <div class="container hero">
+      <h1>Semilleros: inclusión laboral y emprendimiento</h1>
+      <p>🌱 Una herramienta creada por Asperger para Asperger.<br>
+      Es un espacio donde los miembros del club y de la comunidad comparten y hacen crecer sus proyectos.<br>
+      Ellos son parte de ti, parte de nosotros: Asperger para Asperger.<br><br>
+      Te invitamos a apoyarlos y a participar en esta experiencia de colaboración y crecimiento. ✨</p>
+      <p style="margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: var(--brand-accent);">🌟 <strong>Talentos desde el espectro autista y diversidad cognitiva para el mundo</strong></p>
+      <div class="actions">
+        <a class="btn primary" href="#unirse">Unirme al Club Social</a>
+        <a class="btn secondary" href="#proponer">Proponer un proyecto</a>
+      </div>
+
+      <!-- Filtros / búsqueda -->
+      <div class="toolbar" role="search">
+        <label class="sr-only" for="q">Buscar proyectos</label>
+        <input id="q" type="search" placeholder="Buscar proyectos por nombre o descripción…" />
+        <select id="fase" aria-label="Filtrar por fase">
+          <option value="">Todas las fases</option>
+          <option value="semilla">Semilla</option>
+          <option value="brote">Brote</option>
+          <option value="crecimiento">Crecimiento</option>
+        </select>
+        <select id="categoria" aria-label="Filtrar por categoría">
+          <option value="">Todas las categorías</option>
+          <option>Inclusión Laboral</option>
+          <option>Emprendimiento</option>
+          <option>Desarrollo Profesional</option>
+          <option>Red de Contactos</option>
+          <option>Formación Técnica</option>
+          <option>Semilla del Club</option>
+          <option>Semilla de la Comunidad</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main id="semilleros" class="container section" aria-live="polite">
+    <h2>Proyectos semilla</h2>
+    <p class="lead">Iniciativas de <strong>inclusión laboral y emprendimiento</strong> creadas desde la población del espectro autista para la población del espectro autista. <strong>Talentos únicos desde la diversidad cognitiva para el mundo</strong>. Explora, participa en mentorías o apoya con tu experiencia.</p>
+    
+    <!-- Botón para publicar nueva semilla -->
+    <div style="margin-bottom: 2rem; text-align: center;">
+      <button id="btnPublicarSemilla" class="btn primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+        🌱 Publicar Nueva Semilla
+      </button>
+    </div>
+
+    <!-- ===== Grid 3x3 ===== -->
+    <div class="grid" id="grid">
+      <!-- Tarjeta 1 -->
+      <article class="card" data-fase="semilla" data-categoria="Inclusión Laboral" data-title="Bolsa de empleo inclusiva" data-text="Conectar talento del espectro autista con empleadores inclusivos.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Semilla</span><span class="badge">Inclusión Laboral</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">Bolsa de empleo inclusiva</h3>
+          <p class="desc">Plataforma para vacantes con procesos de selección adaptados sensorial y comunicativamente para la población del espectro autista.</p>
+          <div class="tags"><span class="tag">inclusión</span><span class="tag">empleo</span><span class="tag">accesibilidad</span></div>
+          <div class="actions"><a href="https://www.autenticamentecapaces.work" class="btn primary" target="_blank" style="text-decoration: none;">Ver más</a><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 2 -->
+      <article class="card" data-fase="brote" data-categoria="Desarrollo Profesional" data-title="Mentorías de desarrollo profesional" data-text="Estrategias de crecimiento laboral entre pares del espectro autista.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Brote</span><span class="badge">Desarrollo Profesional</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">Mentorías de desarrollo profesional</h3>
+          <p class="desc">Técnicas de organización, planificación y manejo de sobrecarga en contextos laborales, creadas por y para personas del espectro autista.</p>
+          <div class="tags"><span class="tag">carrera</span><span class="tag">crecimiento</span><span class="tag">productividad</span></div>
+          <div class="actions"><button class="btn primary">Ver más</button><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 3 -->
+      <article class="card" data-fase="crecimiento" data-categoria="Emprendimiento" data-title="Red de emprendedores" data-text="Red de apoyo para emprendimientos del espectro autista.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Crecimiento</span><span class="badge">Emprendimiento</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">Red de emprendedores</h3>
+          <p class="desc">Conecta con otros emprendedores del espectro autista para compartir experiencias, recursos y oportunidades de colaboración.</p>
+          <div class="tags"><span class="tag">networking</span><span class="tag">colaboración</span><span class="tag">recursos</span></div>
+          <div class="actions"><button class="btn primary">Ver más</button><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 4 -->
+      <article class="card" data-fase="semilla" data-categoria="Formación Técnica" data-title="Talleres de habilidades técnicas" data-text="Formación técnica adaptada para el espectro autista.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Semilla</span><span class="badge">Formación Técnica</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">Talleres de habilidades técnicas</h3>
+          <p class="desc">Programación, diseño, marketing digital y otras habilidades técnicas con metodologías adaptadas para el espectro autista.</p>
+          <div class="tags"><span class="tag">programación</span><span class="tag">diseño</span><span class="tag">marketing</span></div>
+          <div class="actions"><button class="btn primary">Ver más</button><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 5 -->
+      <article class="card" data-fase="brote" data-categoria="Red de Contactos" data-title="Club de networking profesional" data-text="Red de contactos profesionales del espectro autista.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Brote</span><span class="badge">Red de Contactos</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">Club de networking profesional</h3>
+          <p class="desc">Encuentros profesionales, conversatorios sobre carreras y grupos de interés laboral con reglas claras y previsibles.</p>
+          <div class="tags"><span class="tag">networking</span><span class="tag">profesional</span><span class="tag">conexiones</span></div>
+          <div class="actions"><a href="https://comunidad.aspergerparaasperger.org/invitation?code=9J8594" class="btn primary" target="_blank" style="text-decoration: none;">Ver más</a><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 6 -->
+      <article class="card" data-fase="crecimiento" data-categoria="Emprendimiento" data-title="Marketplace inclusivo" data-text="Plataforma de productos y servicios del espectro autista.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Crecimiento</span><span class="badge">Emprendimiento</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">Marketplace inclusivo</h3>
+          <p class="desc">Vitrina para productos y servicios creados por personas del espectro autista, con estándares justos y procesos adaptados.</p>
+          <div class="tags"><span class="tag">ventas</span><span class="tag">productos</span><span class="tag">servicios</span></div>
+          <div class="actions"><a href="https://tienda.aspergerparaasperger.org" class="btn primary" target="_blank" style="text-decoration: none;">Ver más</a><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 7 -->
+      <article class="card" data-fase="semilla" data-categoria="Emprendimiento" data-title="JM-Universe.com" data-text="Plataforma web de Jose Manuel Garcia Aizpuru.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Semilla</span><span class="badge">Emprendimiento</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">JM-Universe.com</h3>
+          <p class="desc">Plataforma web personal de Jose Manuel Garcia Aizpuru para compartir contenido y conectar con la comunidad del espectro autista.</p>
+          <div class="tags"><span class="tag">web</span><span class="tag">contenido</span><span class="tag">comunidad</span></div>
+          <div class="actions"><button class="btn primary">Ver más</button><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 8 -->
+      <article class="card" data-fase="semilla" data-categoria="Emprendimiento" data-title="Mr Sebas el Podcast" data-text="Podcast de Sebastian Espino Corvera.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Semilla</span><span class="badge">Emprendimiento</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">Mr Sebas el Podcast</h3>
+          <p class="desc">Podcast creado por Sebastian Espino Corvera para compartir experiencias laborales y de emprendimiento del espectro autista.</p>
+          <div class="tags"><span class="tag">podcast</span><span class="tag">audio</span><span class="tag">experiencias</span></div>
+          <div class="actions"><button class="btn primary">Ver más</button><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 9 -->
+      <article class="card" data-fase="semilla" data-categoria="Emprendimiento" data-title="Ezra - Projectopia" data-text="Proyecto en https://www.projectopia.live.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Semilla</span><span class="badge">Emprendimiento</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">Ezra - Projectopia</h3>
+          <p class="desc">Proyecto innovador disponible en https://www.projectopia.live, enfocado en crear soluciones de emprendimiento para la comunidad del espectro autista.</p>
+          <div class="tags"><span class="tag">innovación</span><span class="tag">web</span><span class="tag">soluciones</span></div>
+          <div class="actions"><button class="btn primary">Ver más</button><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 10 -->
+      <article class="card" data-fase="brote" data-categoria="Emprendimiento" data-title="CineSDPictures.com" data-text="Productora audiovisual de los hermanos Daniel y Simón Vásquez Soto.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Brote</span><span class="badge">Emprendimiento</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">CineSDPictures.com</h3>
+          <p class="desc">Productora audiovisual especializada en cortometrajes y animaciones que abordan temas de inclusión y ecología. Fundada por Daniel y Simón Vásquez Soto en Bogotá.</p>
+          <div class="tags"><span class="tag">audiovisual</span><span class="tag">inclusión</span><span class="tag">animación</span><span class="tag">cortometrajes</span></div>
+          <div class="actions"><button class="btn primary">Ver más</button><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 11 -->
+      <article class="card" data-fase="crecimiento" data-categoria="Desarrollo Profesional" data-title="Proyecto de Vida - Sergio" data-text="Avance de habilidades para la vida y cría de tilapias con apoyo del club.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Crecimiento</span><span class="badge">Desarrollo Profesional</span><span class="badge">Semilla del Club</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">Proyecto de Vida - Sergio</h3>
+          <p class="desc">Proyecto de desarrollo personal enfocado en habilidades para la vida y cría de tilapias. El club ha incluido este proyecto en su desarrollo, proporcionando mentorías especializadas en sus destrezas.</p>
+          <div class="tags"><span class="tag">habilidades para la vida</span><span class="tag">acuicultura</span><span class="tag">tilapias</span><span class="tag">desarrollo personal</span><span class="tag">proyecto de vida</span></div>
+          <div class="actions"><button class="btn primary">Ver más</button><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+
+      <!-- Tarjeta 12 -->
+      <article class="card" data-fase="crecimiento" data-categoria="Desarrollo Profesional" data-title="Abyss Sonic - Santiago Leyva" data-text="Desarrollo social, habilidades y creación de banda de rock con apoyo del club.">
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta"><span class="badge status">Crecimiento</span><span class="badge">Desarrollo Profesional</span><span class="badge">Semilla del Club</span><span class="badge">Mentorías</span></div>
+          <h3 class="title">Abyss Sonic - Santiago Leyva</h3>
+          <p class="desc">Proyecto de desarrollo social y habilidades a través de la música rock. El club acompañó a Santiago desde la preadolescencia hasta la adolescencia, fortaleciendo destrezas en múltiples temas y generando confianza para la creación de su banda.</p>
+          <div class="tags"><span class="tag">desarrollo social</span><span class="tag">música</span><span class="tag">rock</span><span class="tag">banda</span><span class="tag">confianza</span><span class="tag">preadolescencia</span><span class="tag">adolescencia</span></div>
+          <div class="actions"><button class="btn primary">Ver más</button><button class="btn secondary">Participar</button></div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- ===== Modal para publicar semilla ===== -->
+  <div id="modalSemilla" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: 16px; padding: 2rem; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3 style="margin: 0; color: var(--text);">🌱 Publicar Nueva Semilla</h3>
+        <button id="cerrarModal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+      
+      <form id="formSemilla">
+        <div style="margin-bottom: 1rem;">
+          <label for="tituloSemilla" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text);">Título del Proyecto *</label>
+          <input type="text" id="tituloSemilla" required style="width: 100%; padding: 0.8rem; border: 1px solid #d7e0ea; border-radius: 8px; font-size: 1rem;">
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+          <label for="descripcionSemilla" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text);">Descripción *</label>
+          <textarea id="descripcionSemilla" required rows="3" style="width: 100%; padding: 0.8rem; border: 1px solid #d7e0ea; border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+          <label for="tipoSemilla" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text);">Tipo de Semilla *</label>
+          <select id="tipoSemilla" required style="width: 100%; padding: 0.8rem; border: 1px solid #d7e0ea; border-radius: 8px; font-size: 1rem;">
+            <option value="">Selecciona el tipo</option>
+            <option value="Semilla del Club">Semilla del Club</option>
+            <option value="Semilla de la Comunidad">Semilla de la Comunidad</option>
+          </select>
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+          <label for="categoriaSemilla" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text);">Categoría *</label>
+          <select id="categoriaSemilla" required style="width: 100%; padding: 0.8rem; border: 1px solid #d7e0ea; border-radius: 8px; font-size: 1rem;">
+            <option value="">Selecciona una categoría</option>
+            <option>Inclusión Laboral</option>
+            <option>Emprendimiento</option>
+            <option>Desarrollo Profesional</option>
+            <option>Red de Contactos</option>
+            <option>Formación Técnica</option>
+          </select>
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+          <label for="mentorSemilla" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text);">Nombre del Responsable *</label>
+          <input type="text" id="mentorSemilla" required style="width: 100%; padding: 0.8rem; border: 1px solid #d7e0ea; border-radius: 8px; font-size: 1rem;" placeholder="Tu nombre completo">
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+          <label for="tagsSemilla" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text);">Tags (separados por comas)</label>
+          <input type="text" id="tagsSemilla" placeholder="ej: innovación, web, comunidad" style="width: 100%; padding: 0.8rem; border: 1px solid #d7e0ea; border-radius: 8px; font-size: 1rem;">
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+          <button type="button" id="cancelarSemilla" class="btn secondary">Cancelar</button>
+          <button type="submit" class="btn primary">🌱 Publicar Semilla</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Secciones extra (anclas) ===== -->
+  <section id="mentorias" class="container section">
+    <h2>Mentorías</h2>
+    <p class="lead">Servicio de mentoría especializado ofrecido por Asperger para Asperger, enfocado en inclusión laboral y emprendimiento. Desde la experiencia del espectro autista, con enfoque de derechos y lenguaje respetuoso.</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+      <div style="background: var(--card); padding: 1.5rem; border-radius: var(--radius); border: 1px solid #e7edf4;">
+        <h3 style="color: var(--brand-accent); margin-top: 0;">Mentorías de Inclusión Laboral</h3>
+        <p>Apoyo para procesos de búsqueda de empleo, adaptaciones en el trabajo y desarrollo de habilidades profesionales.</p>
+        <p style="margin-top: 1rem;"><strong>Contacto:</strong> <a href="mailto:info@aspergerparaasperger.org" style="color: var(--brand-accent);">info@aspergerparaasperger.org</a></p>
+      </div>
+      <div style="background: var(--card); padding: 1.5rem; border-radius: var(--radius); border: 1px solid #e7edf4;">
+        <h3 style="color: var(--brand-accent); margin-top: 0;">Mentorías de Emprendimiento</h3>
+        <p>Guía para iniciar y desarrollar proyectos empresariales, desde la idea hasta la implementación.</p>
+        <p style="margin-top: 1rem;"><strong>Contacto:</strong> <a href="mailto:info@aspergerparaasperger.org" style="color: var(--brand-accent);">info@aspergerparaasperger.org</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="club" class="container section">
+    <h2>Club</h2>
+    <p class="lead">Espacio de networking profesional y desarrollo de habilidades para personas del espectro autista. Actividades previsibles, calendarios claros y grupos de interés laboral.</p>
+    <div style="text-align: center; margin: 2rem 0;">
+      <a href="https://miclub.club" class="btn primary" style="font-size: 1.1rem; padding: 1rem 2rem; text-decoration: none;">🏛️ Acceder al Club</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+      <div style="background: var(--card); padding: 1.5rem; border-radius: var(--radius); border: 1px solid #e7edf4;">
+        <h3 style="color: var(--brand-accent); margin-top: 0;">Encuentros Profesionales</h3>
+        <p>Networking, presentaciones de proyectos y intercambio de experiencias laborales.</p>
+      </div>
+      <div style="background: var(--card); padding: 1.5rem; border-radius: var(--radius); border: 1px solid #e7edf4;">
+        <h3 style="color: var(--brand-accent); margin-top: 0;">Talleres de Habilidades</h3>
+        <p>Desarrollo de competencias técnicas y blandas para el mundo laboral y emprendimiento.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="comunidad" class="container section">
+    <h2>Comunidad</h2>
+    <p class="lead">Red de apoyo mutuo para la población del espectro autista, enfocada en inclusión laboral y emprendimiento. Conectamos talento, compartimos recursos y creamos oportunidades.</p>
+    <div style="text-align: center; margin: 2rem 0;">
+      <a href="https://comunidad.aspergerparaasperger.org/invitation?code=9J8594" class="btn primary" style="font-size: 1.1rem; padding: 1rem 2rem; text-decoration: none;">🌐 Unirse a la Comunidad</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+      <div style="background: var(--card); padding: 1.5rem; border-radius: var(--radius); border: 1px solid #e7edf4;">
+        <h3 style="color: var(--brand-accent); margin-top: 0;">Red de Contactos</h3>
+        <p>Conexiones profesionales, oportunidades de colaboración y apoyo mutuo en proyectos.</p>
+      </div>
+      <div style="background: var(--card); padding: 1.5rem; border-radius: var(--radius); border: 1px solid #e7edf4;">
+        <h3 style="color: var(--brand-accent); margin-top: 0;">Recursos Compartidos</h3>
+        <p>Herramientas, guías y materiales creados por y para la comunidad del espectro autista.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <h4>Asperger para Asperger</h4>
+        <p class="small">Semilleros: inclusión laboral y emprendimiento desde la población del espectro autista para la población del espectro autista. <strong>Talentos desde la diversidad cognitiva para el mundo</strong>.</p>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <p class="small">correo@ejemplo.org<br>+57 300 000 0000</p>
+      </div>
+      <div>
+        <h4>Enlaces</h4>
+        <p class="small"><a href="#semilleros">Semilleros</a><br><a href="#mentorias">Mentorías</a><br><a href="https://miclub.club" target="_blank">Club Social</a><br><a href="https://comunidad.aspergerparaasperger.org/invitation?code=9J8594" target="_blank">Comunidad</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // === Filtro básico por texto, fase y categoría ===
+    const q = document.getElementById('q');
+    const fase = document.getElementById('fase');
+    const categoria = document.getElementById('categoria');
+    let cards = Array.from(document.querySelectorAll('#grid .card'));
+
+    function applyFilters(){
+      const text = (q.value || '').toLowerCase().trim();
+      const f = (fase.value || '').toLowerCase();
+      const c = (categoria.value || '').toLowerCase();
+
+      let visible = 0;
+      cards.forEach(card =>{
+        const t = card.dataset.title.toLowerCase();
+        const d = card.dataset.text.toLowerCase();
+        const okText = !text || t.includes(text) || d.includes(text);
+        const okFase = !f || card.dataset.fase === f;
+        const okCat = !c || card.dataset.categoria.toLowerCase() === c;
+        const show = okText && okFase && okCat;
+        card.style.display = show ? 'flex' : 'none';
+        if(show) visible++;
+      });
+      document.querySelector('h2').textContent = visible + ' proyecto' + (visible===1?'':'s') + ' encontrado' + (visible===1?'':'s');
+    }
+
+    q.addEventListener('input', applyFilters);
+    fase.addEventListener('change', applyFilters);
+    categoria.addEventListener('change', applyFilters);
+
+    // === Funcionalidad para publicar semillas ===
+    const btnPublicarSemilla = document.getElementById('btnPublicarSemilla');
+    const modalSemilla = document.getElementById('modalSemilla');
+    const cerrarModal = document.getElementById('cerrarModal');
+    const cancelarSemilla = document.getElementById('cancelarSemilla');
+    const formSemilla = document.getElementById('formSemilla');
+    const grid = document.getElementById('grid');
+
+    function mostrarModal() {
+      modalSemilla.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function ocultarModal() {
+      modalSemilla.style.display = 'none';
+      document.body.style.overflow = 'auto';
+      formSemilla.reset();
+    }
+
+    function crearNuevaSemilla(datos) {
+      const nuevaSemilla = document.createElement('article');
+      nuevaSemilla.className = 'card';
+      nuevaSemilla.setAttribute('data-fase', 'semilla');
+      nuevaSemilla.setAttribute('data-categoria', datos.categoria);
+      nuevaSemilla.setAttribute('data-title', datos.titulo);
+      nuevaSemilla.setAttribute('data-text', datos.descripcion);
+      
+      const tags = datos.tags ? datos.tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
+      const tagsHtml = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+      
+      nuevaSemilla.innerHTML = `
+        <div class="thumb" aria-hidden="true"></div>
+        <div class="content">
+          <div class="meta">
+            <span class="badge status">Semilla</span>
+            <span class="badge">${datos.categoria}</span>
+            <span class="badge">${datos.tipo}</span>
+            <span class="badge">Mentorías</span>
+          </div>
+          <h3 class="title">${datos.titulo}</h3>
+          <p class="desc">${datos.descripcion}</p>
+          <div class="tags">${tagsHtml}</div>
+          <div class="actions">
+            <button class="btn primary">Ver más</button>
+            <button class="btn secondary">Participar</button>
+          </div>
+        </div>
+      `;
+      
+      grid.appendChild(nuevaSemilla);
+      cards = Array.from(document.querySelectorAll('#grid .card'));
+      applyFilters();
+    }
+
+    btnPublicarSemilla.addEventListener('click', mostrarModal);
+    cerrarModal.addEventListener('click', ocultarModal);
+    cancelarSemilla.addEventListener('click', ocultarModal);
+    
+    modalSemilla.addEventListener('click', (e) => {
+      if (e.target === modalSemilla) {
+        ocultarModal();
+      }
+    });
+
+    formSemilla.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const datos = {
+        titulo: document.getElementById('tituloSemilla').value,
+        descripcion: document.getElementById('descripcionSemilla').value,
+        tipo: document.getElementById('tipoSemilla').value,
+        categoria: document.getElementById('categoriaSemilla').value,
+        mentor: document.getElementById('mentorSemilla').value,
+        tags: document.getElementById('tagsSemilla').value
+      };
+      
+      crearNuevaSemilla(datos);
+      ocultarModal();
+      
+      // Mostrar mensaje de éxito
+      alert('¡Semilla publicada exitosamente! 🌱');
+    });
+
+    // Accesibilidad: foco visible al navegar con teclado
+    document.addEventListener('keydown', e=>{
+      if(e.key==='Tab') document.body.classList.add('show-focus');
+    });
+  </script>
+</body>
+</html>
