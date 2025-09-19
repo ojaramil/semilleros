@@ -115,12 +115,18 @@
       .section p.lead{ text-align: center; max-width: 100%; margin-bottom: 2rem; }
     }
 
-    .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem; }
+    .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem; min-height: 200px; }
     @media (max-width: 980px){ .grid{ grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
     @media (max-width: 640px){ .grid{ grid-template-columns: 1fr; gap: 1rem; } }
     @media (max-width: 480px){ .grid{ grid-template-columns: 1fr; gap: 0.8rem; } }
+    
+    /* Debug: asegurar que el grid sea visible */
+    #grid{ background: transparent; }
+    #grid .card{ opacity: 1; visibility: visible; }
 
     .card{ background: var(--card); border: 1px solid #e7edf4; border-radius: var(--radius); box-shadow: var(--shadow-2); overflow:hidden; display:flex; flex-direction:column; }
+    .card[style*="display: none"]{ display: none !important; }
+    .card:not([style*="display: none"]){ display: flex !important; }
     .thumb{ aspect-ratio: 16 / 9; background: radial-gradient(1200px 400px at 0% 100%, rgba(255,183,3,.25), transparent 60%), linear-gradient(120deg, #dfe9f3, #f9fbff); }
     .content{ padding: 1rem 1rem 1.1rem; display:flex; flex-direction:column; gap:.6rem; }
     .title{ font-weight:800; font-size: 1.05rem; }
@@ -540,14 +546,17 @@
     const fase = document.getElementById('fase');
     const categoria = document.getElementById('categoria');
     let cards = Array.from(document.querySelectorAll('#grid .card'));
+    console.log('Tarjetas encontradas:', cards.length);
 
     function applyFilters(){
       const text = (q.value || '').toLowerCase().trim();
       const f = (fase.value || '').toLowerCase();
       const c = (categoria.value || '').toLowerCase();
 
+      console.log('Aplicando filtros:', { text, f, c, cardsCount: cards.length });
+
       let visible = 0;
-      cards.forEach(card =>{
+      cards.forEach((card, index) =>{
         const t = card.dataset.title.toLowerCase();
         const d = card.dataset.text.toLowerCase();
         const okText = !text || t.includes(text) || d.includes(text);
@@ -556,13 +565,18 @@
         const show = okText && okFase && okCat;
         card.style.display = show ? 'flex' : 'none';
         if(show) visible++;
+        console.log(`Tarjeta ${index}:`, { title: t, show, okText, okFase, okCat });
       });
       document.querySelector('h2').textContent = visible + ' proyecto' + (visible===1?'':'s') + ' encontrado' + (visible===1?'':'s');
+      console.log('Tarjetas visibles:', visible);
     }
 
     q.addEventListener('input', applyFilters);
     fase.addEventListener('change', applyFilters);
     categoria.addEventListener('change', applyFilters);
+    
+    // Aplicar filtros iniciales
+    applyFilters();
 
     // === Funcionalidad para publicar semillas ===
     const btnPublicarSemilla = document.getElementById('btnPublicarSemilla');
